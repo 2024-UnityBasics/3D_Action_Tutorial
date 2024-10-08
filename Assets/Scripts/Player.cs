@@ -21,9 +21,15 @@ public class Player : MonoBehaviour
     // コンポーネントを事前に参照しておく変数
     new Rigidbody rigidbody;
 
+    //アニメーション用のアニメーターを宣言（Startで取得）
+    Animator playerAnimator;
+    //走り判定用のbool
+    bool isRun = false;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -70,10 +76,23 @@ public class Player : MonoBehaviour
                 // Time.deltaTime * 10fは、補間の速度を決めるためのものです。値が大きいほど速く回転し、小さいほどゆっくり回転します。
                 // この補間処理によって、キャラクターは急に向きを変えるのではなく、自然な速度で回転します。
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            
+                //移動中判定なので、アニメーション用のフラグをtrueにする
+                isRun = true;
+            
+            }
+            else
+            {
+                //移動中じゃなければフラグを下ろす
+                isRun = false;
             }
 
+            //AnimatorにisRunの状態を送る
+            playerAnimator.SetBool("Run", isRun);
 
         }
+
+
 
     }
 
