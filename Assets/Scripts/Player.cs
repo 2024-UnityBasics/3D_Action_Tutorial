@@ -101,6 +101,9 @@ public class Player : MonoBehaviour
     {
         rigidbody.AddForce(jumpForce, ForceMode.Impulse);
         Debug.Log("jump");
+
+        //AnimatorにJumpのトリガーを送る
+        playerAnimator.SetTrigger("Jump");
     }
 
     // Move アクションによって呼び出されます。
