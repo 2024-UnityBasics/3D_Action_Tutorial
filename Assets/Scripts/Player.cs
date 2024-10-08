@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 //参考にしやすくするため、InputSystemTutorialとできるだけ変数名等を同一に作成します
@@ -35,7 +36,7 @@ public class Player : MonoBehaviour
     {
         if (Camera.main != null)
         {
-            // メインカメラの前方と右方向を取得（カメラローカル座標でいうところのz軸とx軸）
+            // メインカメラの前方と右方向を取得（カメラローカル座標でいうところのz軸方向とx軸方向）
             Vector3 cameraForward = Camera.main.transform.forward;
             Vector3 cameraRight = Camera.main.transform.right;
 
@@ -55,7 +56,25 @@ public class Player : MonoBehaviour
 
             // 移動ベクトルに速度を掛けて移動
             rigidbody.velocity = moveDirection * moveSpeed + new Vector3(0, rigidbody.velocity.y, 0);
+
+            // キャラクターを移動する方向に向かせるための処理
+            if (moveDirection != Vector3.zero)  // 何かしら移動が発生している場合のみ回転させる
+            {
+                // Quaternion.LookRotationは、指定された方向（moveDirection）を向くための回転を計算します。
+                // moveDirectionはカメラの向きに基づいた移動方向です。
+                // つまり、キャラクターが進む方向に合わせてキャラクターの向きを変えるための回転を求めています。
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+                // transform.rotationはキャラクターの現在の回転を表します。
+                // Quaternion.Slerpは、現在の回転（transform.rotation）から目標の回転（targetRotation）までを滑らかに補間します。
+                // Time.deltaTime * 10fは、補間の速度を決めるためのものです。値が大きいほど速く回転し、小さいほどゆっくり回転します。
+                // この補間処理によって、キャラクターは急に向きを変えるのではなく、自然な速度で回転します。
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            }
+
+
         }
+
     }
 
     // このキャラクターをジャンプさせます。
