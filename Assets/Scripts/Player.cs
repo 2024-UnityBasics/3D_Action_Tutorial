@@ -26,6 +26,13 @@ public class Player : MonoBehaviour
     //走り判定用のbool
     bool isRun = false;
 
+    //レーザー生成用
+    [SerializeField]
+    GameObject laserPrefab;
+
+    [SerializeField]
+    Transform laserSpawner;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -123,6 +130,7 @@ public class Player : MonoBehaviour
 
     public void Fire()
     {
+        Instantiate(laserPrefab, laserSpawner.transform.position, laserSpawner.transform.rotation);
         playerAnimator.SetTrigger("SingleLaserAction");
     }
     public void OnFire(InputAction.CallbackContext context)
