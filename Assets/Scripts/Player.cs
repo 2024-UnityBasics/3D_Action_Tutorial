@@ -120,4 +120,17 @@ public class Player : MonoBehaviour
             Jump();
         }
     }
+
+    public void Fire()
+    {
+        playerAnimator.SetTrigger("SingleLaserAction");
+    }
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Fire();
+        }
+    }
+
 }
