@@ -644,6 +644,7 @@ MonoBehaviour:
   jumpForce: {x: 0, y: 5, z: 0}
   laserPrefab: {fileID: 0}
   laserSpawner: {fileID: 0}
+  attackCollider: {fileID: 0}
 --- !u!54 &514342456
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1678,7 +1679,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -1936,6 +1937,7 @@ MonoBehaviour:
   laserPrefab: {fileID: 5604184269627548280, guid: a546c1dd2f950b248a7c190279db1259,
     type: 3}
   laserSpawner: {fileID: 1345482384}
+  attackCollider: {fileID: 1351453680}
 --- !u!114 &1755906926
 MonoBehaviour:
   m_ObjectHideFlags: 0

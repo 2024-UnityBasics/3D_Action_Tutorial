@@ -29,9 +29,13 @@ public class Player : MonoBehaviour
     //レーザー生成用
     [SerializeField]
     GameObject laserPrefab;
-
+    //レーザー発射地点指定用
     [SerializeField]
     Transform laserSpawner;
+
+    //攻撃判定（近接武器）用のコライダー
+    [SerializeField]
+    Collider attackCollider;
 
     void Start()
     {
@@ -127,30 +131,52 @@ public class Player : MonoBehaviour
             Jump();
         }
     }
-
+    // レーザーを発射する関数
     public void Fire()
     {
+        // laserPrefab（レーザーのプレハブ）をlaserSpawnerの位置と向きで生成する
         Instantiate(laserPrefab, laserSpawner.transform.position, laserSpawner.transform.rotation);
+
+        // プレイヤーのアニメーターに「SingleLaserAction」トリガーをセットし、レーザー発射のアニメーションを再生
         playerAnimator.SetTrigger("SingleLaserAction");
     }
+
+    // InputSystemからのFire入力に応じた処理
     public void OnFire(InputAction.CallbackContext context)
     {
+        // 入力が始まった瞬間（ボタンを押したとき）にFire()を呼び出す
         if (context.started)
         {
             Fire();
         }
     }
 
+    // 近接攻撃を行う関数
     public void Attack()
     {
+        // プレイヤーのアニメーターに「CrossRangeAttack」トリガーをセットし、近接攻撃のアニメーションを再生
         playerAnimator.SetTrigger("CrossRangeAttack");
     }
+
+    // InputSystemからのAttack入力に応じた処理
     public void OnAttack(InputAction.CallbackContext context)
     {
+        // 入力が始まった瞬間（ボタンを押したとき）にAttack()を呼び出す
         if (context.started)
         {
             Attack();
         }
     }
 
+    // 近接攻撃用のコライダーを有効にする関数
+    void AttackColliderOn()
+    {
+        attackCollider.enabled = true;
+    }
+
+    // 近接攻撃用のコライダーを無効にする関数
+    void AttackColliderOff()
+    {
+        attackCollider.enabled = false;
+    }
 }
