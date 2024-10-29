@@ -141,4 +141,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Attack()
+    {
+        playerAnimator.SetTrigger("CrossRangeAttack");
+    }
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Attack();
+        }
+    }
+
 }
