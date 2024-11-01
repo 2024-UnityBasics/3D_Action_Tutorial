@@ -2317,6 +2317,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1262930610455072452, guid: 9c83bfa81550dc64fae0a69988fce9f2,
         type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 1148746809657973578, guid: 28dc0e7965749b64f9a16f3d606eecd0,
+        type: 3}
+    - target: {fileID: 1262930610455072452, guid: 9c83bfa81550dc64fae0a69988fce9f2,
+        type: 3}
       propertyPath: enemiesToSpawn
       value: 3
       objectReference: {fileID: 0}
