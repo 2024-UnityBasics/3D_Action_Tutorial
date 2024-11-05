@@ -23,16 +23,7 @@ public class StatusManager : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Hit");
-        //当たり判定のタグネームと一致していればダメージ処理呼び出し
-        if (other.CompareTag(TagName))
-        {
-            Damage();
-        }
-    }
-    private void Damage()
+    public void Damage()
     {
         hp--;
         var effect = Instantiate(damageEffect);

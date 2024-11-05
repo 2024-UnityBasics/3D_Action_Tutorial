@@ -3,13 +3,14 @@ using System.Collections;
 
 public class EnemyActionDash : MonoBehaviour
 {
-    public Transform target;              // Playerの位置を指定
-    public float dashForce = 10f;         // 突進の力
-    public float dashDuration = 1f;       // 突進の効果時間
-    public float dashCooldown = 2f;       // 突進後の待機時間
+    [SerializeField] Transform target;              // Playerの位置を指定
+    [SerializeField] float dashSpeed = 10f;         // 一定の突進速度
+    [SerializeField] float dashDuration = 1f;       // 突進の効果時間
+    [SerializeField] float dashCooldown = 2f;       // 突進後の待機時間
 
     private bool isDashing = false;       // 突進中かどうか
     private Rigidbody rb;                 // Rigidbodyコンポーネント
+    private Vector3 dashDirection;        // 突進の方向
 
     void Start()
     {
@@ -32,15 +33,15 @@ public class EnemyActionDash : MonoBehaviour
                 // 突進中の処理
                 float dashEndTime = Time.time + dashDuration; // 突進終了の時間を計算
 
-                // 突進が終了するまで力を加える
+                // 突進が終了するまで、速度を固定して突進する
                 while (Time.time < dashEndTime)
                 {
-                    // 現在の向きを取得し、突進の方向を決定
-                    Vector3 direction = (target.position - transform.position).normalized;
-                    rb.AddForce(direction * dashForce, ForceMode.VelocityChange); // 力を加える
+                    rb.velocity = dashDirection * dashSpeed; // 突進方向に一定の速度で進む
                     yield return null; // 次のフレームへ
                 }
 
+                // 突進終了後、速度を0にする
+                rb.velocity = Vector3.zero;
                 isDashing = false; // 突進が終了したのでフラグをリセット
                 yield return new WaitForSeconds(dashCooldown); // 待機時間を設ける
             }
@@ -49,8 +50,9 @@ public class EnemyActionDash : MonoBehaviour
 
     void StartDash()
     {
-        // Playerの方向を向く
+        // プレイヤーの方向を向き、突進方向を計算
         transform.LookAt(target.position);
+        dashDirection = (target.position - transform.position).normalized; // 突進の方向を一度だけ取得
         isDashing = true; // 突進中フラグを立てる
     }
 }
