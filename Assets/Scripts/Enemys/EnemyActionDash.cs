@@ -12,6 +12,10 @@ public class EnemyActionDash : MonoBehaviour
     private Rigidbody rb;                 // Rigidbodyコンポーネント
     private Vector3 dashDirection;        // 突進の方向
 
+    //攻撃判定（近接武器）用のコライダー
+    [SerializeField]
+    Collider attackCollider;
+
     void Start()
     {
         // Rigidbodyコンポーネントの取得
@@ -33,12 +37,17 @@ public class EnemyActionDash : MonoBehaviour
                 // 突進中の処理
                 float dashEndTime = Time.time + dashDuration; // 突進終了の時間を計算
 
+                AttackColliderOn();
+
                 // 突進が終了するまで、速度を固定して突進する
                 while (Time.time < dashEndTime)
                 {
+
                     rb.velocity = dashDirection * dashSpeed; // 突進方向に一定の速度で進む
                     yield return null; // 次のフレームへ
                 }
+
+                AttackColliderOff();
 
                 // 突進終了後、速度を0にする
                 rb.velocity = Vector3.zero;
@@ -54,5 +63,21 @@ public class EnemyActionDash : MonoBehaviour
         transform.LookAt(target.position);
         dashDirection = (target.position - transform.position).normalized; // 突進の方向を一度だけ取得
         isDashing = true; // 突進中フラグを立てる
+    }
+
+    // 近接攻撃用のコライダーを有効にする関数
+    void AttackColliderOn()
+    {
+        attackCollider.enabled = true;
+        Debug.Log("Attack c on");
+
+    }
+
+    // 近接攻撃用のコライダーを無効にする関数
+    void AttackColliderOff()
+    {
+        attackCollider.enabled = false;
+        Debug.Log("Attack c off");
+
     }
 }
