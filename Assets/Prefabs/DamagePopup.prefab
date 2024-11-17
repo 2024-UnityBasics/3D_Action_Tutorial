@@ -149,3 +149,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageText: {fileID: 5460378881571001707}
   startColor: {r: 1, g: 1, b: 1, a: 0}
+  moveSpeed: 100
