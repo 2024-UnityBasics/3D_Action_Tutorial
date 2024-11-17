@@ -1,6 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+
+
+// DamageTypeをクラス外で宣言
+public enum DamageType
+{
+    Normal,          // 通常ダメージ
+    Critical,        // クリティカルダメージ
+    SuperCritical,   // スーパークリティカル
+    HyperCritical    // ハイパークリティカル
+}
 
 public class StatusManager : MonoBehaviour
 {
@@ -27,22 +38,14 @@ public class StatusManager : MonoBehaviour
     }
 
     // 被ダメージ時の処理
-    public void Damage(int baseDamage)
+    public void Damage(int baseDamage ,float takeCrit)
     {
-        // ランダム補正を計算（-20%～+20%の範囲）
-        float randomFactor = Random.Range(0.8f, 1.2f);
-        float finalDamage = baseDamage * randomFactor;
+        DamageType damageType;        // DamageTypeを宣言
 
-        // クリティカル判定
-        if (Random.value < criticalRate) // Random.value は 0～1の範囲でランダムな値を返す
-        {
-            finalDamage *= criticalMultiplier; // クリティカル発生でダメージを増加
-            Debug.Log($"{name} はクリティカルヒット！ ダメージ: {finalDamage}");
-        }
-        else
-        {
-            Debug.Log($"{name} に通常ダメージ: {finalDamage}");
-        }
+        float finalDamage;  // 計算後の最終ダメージ
+
+        // ダメージ計算を専用関数化
+        DamageCalc(baseDamage, out damageType, out finalDamage ,takeCrit);
 
         // HPを減少
         hp -= Mathf.RoundToInt(finalDamage);
@@ -51,7 +54,71 @@ public class StatusManager : MonoBehaviour
         effect.transform.position = transform.position; // ダメージエフェクトの生成場所の指定
 
         DamagePopupManager manager = FindObjectOfType<DamagePopupManager>(); // Managerを検索
-        manager.ShowDamage(Mathf.RoundToInt(finalDamage), transform.position); // ダメージポップアップ表示
+        manager.ShowDamage(Mathf.RoundToInt(finalDamage), transform.position, damageType); // ダメージポップアップ表示
+    }
+
+    private void DamageCalc(int baseDamage, out DamageType damageType, out float finalDamage, float takeCrit)
+    {
+        // クリティカル判定
+        int criticalHits = 0;  // クリティカルが発生した回数
+        float remainingRate = takeCrit; // criticalRateが1を超えた場合に、繰り返しの回数を制御
+
+
+        // ランダム補正を計算（-20%～+20%の範囲）
+        float randomFactor = Random.Range(0.8f, 1.2f);
+        finalDamage = baseDamage * randomFactor;
+
+
+        // remainingRateに基づいて繰り返し
+        while (remainingRate > 0)
+        {
+            // remainingRate が 1 より大きい場合は確実にクリティカルを加算
+            if (remainingRate >= 1.0f)
+            {
+                criticalHits++; // 1回目のクリティカル
+                remainingRate -= 1.0f; // 1を引いて次に進む
+            }
+            else if (Random.value < remainingRate)
+            {
+                // remainingRate が 1 以下のとき、確率判定
+                criticalHits++; // クリティカル判定成功
+                break; // 1回判定したら終了
+            }
+            else { break; } //クリティカル判定に失敗したら終了
+        }
+
+        // クリティカル回数に基づいてダメージを調整
+        switch (criticalHits)
+        {
+            case 0:
+                // クリティカル発生しなかった場合（通常ダメージ）
+                damageType = DamageType.Normal;
+                break;
+
+            case 1:
+                // 1回目のクリティカル（通常クリティカル）
+                finalDamage *= criticalMultiplier;  // 通常クリティカル（倍率はcriticalMultiplier）
+                damageType = DamageType.Critical;
+                break;
+
+            case 2:
+                // 2回目のクリティカル（SuperCritical）
+                finalDamage *= criticalMultiplier * 2f;  // SuperCritical（倍率は2倍）
+                damageType = DamageType.SuperCritical;
+                break;
+
+            case 3:
+                // 3回目のクリティカル（HyperCritical）
+                finalDamage *= criticalMultiplier * 3f;  // HyperCritical（倍率は3倍）
+                damageType = DamageType.HyperCritical;
+                break;
+
+            default:
+                // それ以上のクリティカル（倍率はさらに増加）
+                finalDamage *= criticalMultiplier * (1 + (criticalHits - 1) * 1f);  // 1回目以降はさらに倍増
+                damageType = DamageType.HyperCritical;  // クリティカル段階を割り当てる（仮にDamageTypeの最大値を設定）
+                break;
+        }
     }
 
     // アタッチされたオブジェクトが破壊される際の処理
@@ -69,5 +136,8 @@ public class StatusManager : MonoBehaviour
     {
         return attackDamage;
     }
-
+    public float GetCritAmount()
+    {
+        return criticalRate;
+    }
 }

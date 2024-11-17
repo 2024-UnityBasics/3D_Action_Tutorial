@@ -24,6 +24,7 @@ public class DamageTrigger : MonoBehaviour
             StatusManager attackerStatus = other.GetComponentInParent<StatusManager>();
  
             int damageAmount = 1; // デフォルトのダメージ量
+            float critAmount = 0f; // デフォルトのダメージ量
 
 
             // 親の StatusManager にダメージを通知
@@ -33,10 +34,11 @@ public class DamageTrigger : MonoBehaviour
                 {
                     // 攻撃側のダメージ量を取得
                     damageAmount = attackerStatus.GetDamageAmount();
+                    critAmount = attackerStatus.GetCritAmount();
                 }
 
                 // ダメージ量を処理関数に送る
-                statusManager.Damage(damageAmount);
+                statusManager.Damage(damageAmount, critAmount);
             }
         }
     }

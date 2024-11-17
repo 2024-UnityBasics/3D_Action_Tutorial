@@ -1901,6 +1901,11 @@ MonoBehaviour:
   damagePopupPrefab: {fileID: 5543453571534028294, guid: a4f4ee8eb641b3444b4838b9f2a16992,
     type: 3}
   canvas: {fileID: 1788405902}
+  normalPopupColor: {r: 1, g: 1, b: 1, a: 1}
+  criticalPopupColor: {r: 0.9920671, g: 1, b: 0, a: 1}
+  superCriticalPopupColor: {r: 1, g: 0, b: 0.17352867, a: 1}
+  hyperCriticalPopupColor: {r: 1, g: 0, b: 0.9268279, a: 1}
+  fontSizeScale: 1
 --- !u!1 &1755906923 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b7b0e132526f3b54aab3d87009db8030,
@@ -2161,6 +2166,8 @@ MonoBehaviour:
     type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060,
     type: 3}
+  criticalRate: 2.3
+  criticalMultiplier: 2
 --- !u!1 &1769284645
 GameObject:
   m_ObjectHideFlags: 0

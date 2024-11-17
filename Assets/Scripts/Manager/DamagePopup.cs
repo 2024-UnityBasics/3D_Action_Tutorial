@@ -5,19 +5,23 @@ using System.Collections;  // コルーチンを使うための名前空間
 public class DamagePopup : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI damageText; // ダメージ数値を表示するTextMeshProUGUI
-    [SerializeField] Color startColor;           // テキストの初期色
+    Color startColor;           // テキストの初期色
 
     private Vector3 initialPosition;        // popup初期位置
     [SerializeField] float moveSpeed = 1f;  // popup移動スピードの設定
 
     // ダメージを表示する関数
-    public void ShowDamage(int damage)
+    public void ShowDamage(int damage , Color damageColor, float fontSizeScale)
     {
         // 初期位置を記録
         initialPosition = transform.position;
+        startColor = damageColor;
 
         damageText.text = damage.ToString();  // ダメージ数値を文字列に変換して設定
         damageText.color = new Color(startColor.r, startColor.g, startColor.b, 1f); // 完全に表示
+        damageText.fontSize *= fontSizeScale;
+        // メッシュを強制的に再更新
+        damageText.ForceMeshUpdate();
 
         StartCoroutine(FadeOut());  // フェードアウト処理をコルーチンで開始
     }
