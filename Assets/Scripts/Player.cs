@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
     public void Fire()
     {
         // laserPrefab（レーザーのプレハブ）をlaserSpawnerの位置と向きで生成する
-        Instantiate(laserPrefab, laserSpawner.transform.position, laserSpawner.transform.rotation);
+        Instantiate(laserPrefab, laserSpawner.transform.position, laserSpawner.transform.rotation,transform);
 
         // プレイヤーのアニメーターに「SingleLaserAction」トリガーをセットし、レーザー発射のアニメーションを再生
         playerAnimator.SetTrigger("SingleLaserAction");

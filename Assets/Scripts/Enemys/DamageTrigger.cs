@@ -20,10 +20,23 @@ public class DamageTrigger : MonoBehaviour
         {
             Debug.Log("Hit registered by DamageTrigger");
 
+            // 攻撃オブジェクトの親オブジェクトから StatusManager を取得
+            StatusManager attackerStatus = other.GetComponentInParent<StatusManager>();
+ 
+            int damageAmount = 1; // デフォルトのダメージ量
+
+
             // 親の StatusManager にダメージを通知
             if (statusManager != null)
             {
-                statusManager.Damage();
+                if(attackerStatus != null)
+                {
+                    // 攻撃側のダメージ量を取得
+                    damageAmount = attackerStatus.GetDamageAmount();
+                }
+
+                // ダメージ量を処理関数に送る
+                statusManager.Damage(damageAmount);
             }
         }
     }

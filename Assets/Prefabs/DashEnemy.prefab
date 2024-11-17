@@ -123,13 +123,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainObject: {fileID: 1148746809657973578}
-  hp: 5
+  hp: 50
   maxHp: 5
+  attackDamage: 10
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266,
     type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060,
     type: 3}
-  TagName: PlayerAttack
 --- !u!54 &542286799886954143
 Rigidbody:
   m_ObjectHideFlags: 0
