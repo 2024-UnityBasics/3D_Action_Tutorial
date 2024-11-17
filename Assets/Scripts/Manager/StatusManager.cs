@@ -27,9 +27,14 @@ public class StatusManager : MonoBehaviour
     public void Damage(int damage)
     {
         Debug.Log($"{name} は {damage} ダメージを受けます");
-        hp -= damage;
-        var effect = Instantiate(damageEffect);
-        effect.transform.position = transform.position;
+
+        hp -= damage;                               // 引数damageの分だけHPを減少
+
+        var effect = Instantiate(damageEffect);     // ダメージエフェクトの生成
+        effect.transform.position = transform.position; // ダメージエフェクトの生成場所の指定
+
+        DamagePopupManager manager = FindObjectOfType<DamagePopupManager>(); // Managerを検索
+        manager.ShowDamage(damage, transform.position); // ダメージポップアップ表示
     }
 
     // アタッチされたオブジェクトが破壊される際の処理
