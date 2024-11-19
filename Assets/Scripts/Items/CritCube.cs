@@ -5,27 +5,30 @@ public class CritCube : MonoBehaviour
     [SerializeField]
     private float critIncreaseAmount = 0.1f; // 増加量（デフォルトは0.1）
 
-    private void OnTriggerEnter(Collider other)
+    private bool isCollected = false;
+
+    // Playerに接触したときに呼び出されるメソッド
+    public void GetCritCube()
     {
-        if (other.CompareTag("Player"))
+        if (isCollected) return;  // すでに取得済みなら処理しない
+
+        // StatusManagerの参照を取得
+        StatusManager statusManager = FindObjectOfType<StatusManager>();
+        if (statusManager != null)
         {
-            // StatusManagerの参照を取得
-            StatusManager statusManager = other.GetComponent<StatusManager>();
-            if (statusManager != null)
-            {
-                // IncreaseCritRateを呼び出し、引数として増加量を渡す
-                statusManager.IncreaseCritRate(critIncreaseAmount);
+            isCollected = true;
+            // IncreaseCritRateを呼び出し、引数として増加量を渡す
+            statusManager.IncreaseCritRate(critIncreaseAmount);
 
-                // ログ (デバッグ用)
-                Debug.Log($"CritCube取得！ クリティカル率が {critIncreaseAmount} 増加しました。");
+            // ログ (デバッグ用)
+            Debug.Log($"CritCube取得！ クリティカル率が {critIncreaseAmount} 増加しました。");
 
-                // このアイテムを消去
-                Destroy(gameObject);
-            }
-            else
-            {
-                Debug.LogWarning("PlayerにStatusManagerが見つかりません。");
-            }
+            // このアイテムを消去
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerにStatusManagerが見つかりません。");
         }
     }
 }
