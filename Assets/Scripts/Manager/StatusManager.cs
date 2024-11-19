@@ -140,4 +140,13 @@ public class StatusManager : MonoBehaviour
     {
         return criticalRate;
     }
+
+    // クリティカル率を増加させる汎用的な関数
+    public void IncreaseCritRate(float amount)
+    {
+        criticalRate += amount;
+
+        // ログ (デバッグ用)
+        Debug.Log($"クリティカル率が {amount} 増加しました。現在のクリティカル率: {criticalRate}");
+    }
 }
