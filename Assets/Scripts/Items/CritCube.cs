@@ -7,6 +7,8 @@ public class CritCube : MonoBehaviour
 
     private bool isCollected = false;
 
+    [SerializeField] GameObject itemGetEffect;
+
     // Playerに接触したときに呼び出されるメソッド
     public void GetCritCube()
     {
@@ -22,6 +24,10 @@ public class CritCube : MonoBehaviour
 
             // ログ (デバッグ用)
             Debug.Log($"CritCube取得！ クリティカル率が {critIncreaseAmount} 増加しました。");
+
+            // アイテム取得時のエフェクト
+            var effect = Instantiate(itemGetEffect);
+            effect.transform.position = transform.position;
 
             // このアイテムを消去
             Destroy(gameObject);
