@@ -10,12 +10,13 @@ public class CritCube : MonoBehaviour
     [SerializeField] GameObject itemGetEffect;
 
     // Playerに接触したときに呼び出されるメソッド
-    public void GetCritCube()
+    public void GetCritCube(Collider other)
     {
         if (isCollected) return;  // すでに取得済みなら処理しない
 
-        // StatusManagerの参照を取得
-        StatusManager statusManager = FindObjectOfType<StatusManager>();
+        // 他のColliderからStatusManagerを取得（PlayerのStatusManagerのみ）
+        StatusManager statusManager = other.GetComponent<StatusManager>();
+
         if (statusManager != null)
         {
             isCollected = true;

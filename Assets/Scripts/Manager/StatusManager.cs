@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -128,6 +129,14 @@ public class StatusManager : MonoBehaviour
         var effect = Instantiate(destroyEffect);
         effect.transform.position = transform.position;
         Destroy(effect, 5);
+
+        // DropTableを取得してアイテムドロップ
+        DropTable dropTable = GetComponentInChildren<DropTable>();
+        if (dropTable != null)
+        {
+            dropTable.DropItems();
+        }
+
         Destroy(MainObject);
     }
 

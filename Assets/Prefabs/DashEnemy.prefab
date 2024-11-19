@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1005722542887311940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1011732784306386776}
+  - component: {fileID: 6863848495700170396}
+  m_Layer: 0
+  m_Name: DropTable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1011732784306386776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005722542887311940}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6010584539514697753}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6863848495700170396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005722542887311940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c472fa0533781f4f928ccd298f7008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsToDrop:
+  - {fileID: 3788555062537418835, guid: dcdcc315a22b38640ad58f8c373f36ea, type: 3}
+  - {fileID: 3788555062537418835, guid: dcdcc315a22b38640ad58f8c373f36ea, type: 3}
+  - {fileID: 3788555062537418835, guid: dcdcc315a22b38640ad58f8c373f36ea, type: 3}
 --- !u!1 &1148746809657973578
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,6 +85,7 @@ Transform:
   m_Children:
   - {fileID: 8419222755214124978}
   - {fileID: 1225366197248829393}
+  - {fileID: 1011732784306386776}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1447029108443194381
@@ -130,6 +179,8 @@ MonoBehaviour:
     type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060,
     type: 3}
+  criticalRate: 0.3
+  criticalMultiplier: 2
 --- !u!54 &542286799886954143
 Rigidbody:
   m_ObjectHideFlags: 0

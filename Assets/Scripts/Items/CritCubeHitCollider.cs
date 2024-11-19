@@ -17,7 +17,7 @@ public class CritCubeHitCollider : MonoBehaviour
         {
             Debug.Log($"CritCubeコライダー検知！");
             // Playerに接触したら、CritCubeの処理を呼び出す
-            critCube.GetCritCube();
+            critCube.GetCritCube(other); // PlayerのStatusManagerを渡す
         }
     }
 }

@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29177885a39167b4eb93ebf4efe2cf9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  critIncreaseAmount: 0.1
+  critIncreaseAmount: 0.3
   itemGetEffect: {fileID: 8962295279383145195, guid: 2d4bbecdc1017b04d9528539d150d392,
     type: 3}
 --- !u!54 &9044588025216329893
