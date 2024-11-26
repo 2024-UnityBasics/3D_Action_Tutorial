@@ -37,6 +37,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     Collider attackCollider;
 
+    // 地面判定用のRayの長さ
+    [SerializeField]
+    private float groundCheckDistance = 0.2f; // プレイヤーの足元から下に向けてレイを飛ばす距離
+
+    // ジャンプするために地面に接触しているかを判定するフラグ
+    [SerializeField]
+    private bool isGrounded;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -46,6 +54,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
+        CheckGrounded();
     }
 
     // 指定した速度で、このキャラクターを移動させます。
@@ -87,10 +96,10 @@ public class Player : MonoBehaviour
                 // Time.deltaTime * 10fは、補間の速度を決めるためのものです。値が大きいほど速く回転し、小さいほどゆっくり回転します。
                 // この補間処理によって、キャラクターは急に向きを変えるのではなく、自然な速度で回転します。
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
-            
+
                 //移動中判定なので、アニメーション用のフラグをtrueにする
                 isRun = true;
-            
+
             }
             else
             {
@@ -110,11 +119,11 @@ public class Player : MonoBehaviour
     // このキャラクターをジャンプさせます。
     public void Jump()
     {
-        rigidbody.AddForce(jumpForce, ForceMode.Impulse);
-        Debug.Log("jump");
-
-        //AnimatorにJumpのトリガーを送る
-        playerAnimator.SetTrigger("Jump");
+        if (isGrounded)
+        {
+            rigidbody.AddForce(jumpForce, ForceMode.Impulse);
+            playerAnimator.SetTrigger("Jump"); // アニメーションのトリガーをセット
+        }
     }
 
     // Move アクションによって呼び出されます。
@@ -131,11 +140,31 @@ public class Player : MonoBehaviour
             Jump();
         }
     }
+    // 足元にRayを飛ばして地面に接触しているかを確認する
+    private void CheckGrounded()
+    {
+    // 足元から少し上（例えば、足元から0.1f程度上）にRayを発射
+    Ray ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down); // 足元少し上にRayを発射
+        RaycastHit hit;
+
+        // レイが地面（または指定したレイヤー）に当たったかを判定
+        if (Physics.Raycast(ray, out hit, groundCheckDistance))
+        {
+            if (hit.collider.CompareTag("Ground")) // "Ground"タグがついているオブジェクトに接触していれば
+            {
+                isGrounded = true; // 地面にいるのでジャンプ可能
+            }
+        }
+        else
+        {
+            isGrounded = false; // 地面にいない場合はジャンプ不可
+        }
+    }
     // レーザーを発射する関数
     public void Fire()
     {
         // laserPrefab（レーザーのプレハブ）をlaserSpawnerの位置と向きで生成する
-        Instantiate(laserPrefab, laserSpawner.transform.position, laserSpawner.transform.rotation,transform);
+        Instantiate(laserPrefab, laserSpawner.transform.position, laserSpawner.transform.rotation, transform);
 
         // プレイヤーのアニメーターに「SingleLaserAction」トリガーをセットし、レーザー発射のアニメーションを再生
         playerAnimator.SetTrigger("SingleLaserAction");

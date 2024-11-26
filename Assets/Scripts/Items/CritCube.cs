@@ -15,7 +15,7 @@ public class CritCube : MonoBehaviour
         if (isCollected) return;  // ‚·‚Å‚Éæ“¾Ï‚İ‚È‚çˆ—‚µ‚È‚¢
 
         // ‘¼‚ÌCollider‚©‚çStatusManager‚ğæ“¾iPlayer‚ÌStatusManager‚Ì‚İj
-        StatusManager statusManager = other.GetComponent<StatusManager>();
+        StatusManager statusManager = other.GetComponentInParent<StatusManager>();
 
         if (statusManager != null)
         {
