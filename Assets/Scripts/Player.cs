@@ -179,6 +179,32 @@ public class Player : MonoBehaviour
             Fire();
         }
     }
+    public void UltimateSkill()
+    {
+        // プレイヤーのアニメーターに「UltimateSkill」トリガーをセット
+        playerAnimator.SetTrigger("UltimateSkill");
+        
+        // 親オブジェクトにある CameraManager を取得
+        CameraManager cm = GetComponentInParent<CameraManager>();
+        if (cm != null)
+        {
+            cm.ActivateUltimateSkillCamera();
+        }
+        else
+        {
+            Debug.LogError("親オブジェクトに CameraManager が見つかりませんでした！");
+        }
+    }
+
+    // InputSystemからのFire入力に応じた処理
+    public void OnUltimateSkill(InputAction.CallbackContext context)
+    {
+        // 入力が始まった瞬間（ボタンを押したとき）にFire()を呼び出す
+        if (context.started)
+        {
+            UltimateSkill();
+        }
+    }
 
     // 近接攻撃を行う関数
     public void Attack()
