@@ -32,6 +32,15 @@ public class Player : MonoBehaviour
     //レーザー発射地点指定用
     [SerializeField]
     Transform laserSpawner;
+    // Ult収束エフェクト
+    [SerializeField]
+    GameObject AttractorPrefab;
+    // Ult収束地点
+    [SerializeField]
+    Transform AttractorPearent;
+    // Ult発射位置（今回は右手）
+    [SerializeField]
+    Transform lightHandsPosition;
 
     //攻撃判定（近接武器）用のコライダー
     [SerializeField]
@@ -181,9 +190,10 @@ public class Player : MonoBehaviour
     }
     public void UltimateSkill()
     {
+
         // プレイヤーのアニメーターに「UltimateSkill」トリガーをセット
         playerAnimator.SetTrigger("UltimateSkill");
-        
+
         // 親オブジェクトにある CameraManager を取得
         CameraManager cm = GetComponentInParent<CameraManager>();
         if (cm != null)
@@ -195,7 +205,6 @@ public class Player : MonoBehaviour
             Debug.LogError("親オブジェクトに CameraManager が見つかりませんでした！");
         }
     }
-
     // InputSystemからのFire入力に応じた処理
     public void OnUltimateSkill(InputAction.CallbackContext context)
     {
@@ -234,4 +243,29 @@ public class Player : MonoBehaviour
     {
         attackCollider.enabled = false;
     }
+    void AttractorEffect()
+    {
+        // 収束エフェクトPrefabをAttractorPearentの位置と向きで生成する
+        // AnimationEventで呼び出し
+        Instantiate(AttractorPrefab, AttractorPearent.transform.position, AttractorPearent.transform.rotation, AttractorPearent.transform);
+    }
+
+    void UltFire()
+    {
+        // AnimatioEventで呼び出すUltの攻撃動作
+        Debug.Log("UltFire");
+        StartCoroutine(UltFireRoutine());
+    }
+    private IEnumerator UltFireRoutine()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                Instantiate(laserPrefab, lightHandsPosition.transform.position, lightHandsPosition.transform.rotation, transform);
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
 }
