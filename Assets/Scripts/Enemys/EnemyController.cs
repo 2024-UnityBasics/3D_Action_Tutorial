@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
-{
-    private enum EnemyState
-    {
+public class EnemyController : MonoBehaviour {
+    private enum EnemyState {
         Idle,       // 立ち止まって何もしない
         Attack,     // プレイヤーを攻撃する
         Damaged     // 被弾中（ノックバック状態）
@@ -13,7 +11,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f; // プレイヤーを攻撃できる範囲
     [SerializeField] private float knockbackDuration = 0.5f; // ノックバックが続く時間
     [SerializeField] private float knockbackForce = 5f; // ノックバックの強さ
-    [SerializeField] private float idleDuration =2f;    //アイドル状態の続く時間
+    [SerializeField] private float idleDuration = 2f;    //アイドル状態の続く時間
 
     [SerializeField] private float idleTimer = 0f; // アイドル状態の経過時間
 
@@ -22,10 +20,15 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rb; // Rigidbody参照
     private bool isKnockbackApplied = false; // ノックバックが適用されたかどうかを管理するフラグ
 
+    EnemyActionDash enemyActionDash;
+
     void Start()
     {
         // Rigidbodyを取得
         rb = GetComponent<Rigidbody>();
+        // 攻撃用のクラスを取得
+        enemyActionDash = GetComponent<EnemyActionDash>();
+
     }
 
     void Update()
@@ -62,6 +65,7 @@ public class EnemyController : MonoBehaviour
     {
         // 攻撃が終わったらIdle状態に戻る
         Debug.Log("Enemy is attacking the player!");
+        enemyActionDash.StartDash();
         //currentState = EnemyState.Idle;
     }
 
@@ -95,8 +99,16 @@ public class EnemyController : MonoBehaviour
         damagedTimer = 0f;
         idleTimer = 0f;
 
+        // 突進中であれば中断
+        if (enemyActionDash != null && enemyActionDash.IsDashing())
+        {
+            enemyActionDash.CancelDash();
+            Debug.Log("Dash interrupted!");
+        }
+
         // 攻撃元から見たノックバックの方向を計算
-        knockbackDirection = (transform.position - attackSource).normalized + Vector3.up;
+        knockbackDirection = (transform.position - attackSource).normalized;
+        knockbackDirection.y = 1f;      //ノックアップ用にy軸は１fを設定
 
         Debug.Log("Enemy is taking damage!");
     }
