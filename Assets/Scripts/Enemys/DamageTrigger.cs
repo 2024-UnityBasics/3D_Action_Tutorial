@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageTrigger : MonoBehaviour
-{
+public class DamageTrigger : MonoBehaviour {
     [SerializeField] string tagName;            //当たり判定となるタグ
     private StatusManager statusManager;
+    private Rigidbody rb;
+
+    private Vector3 knockbackDirection; // ノックバックの方向を記憶
+    [SerializeField] private float knockbackForce = 5f; // ノックバックの強さ
 
     void Start()
     {
-        // 親オブジェクトの StatusManager を取得
+        // 親オブジェクトの StatusManagerとRigidbody を取得
         statusManager = GetComponentInParent<StatusManager>();
+        rb = GetComponentInParent<Rigidbody>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,15 +26,16 @@ public class DamageTrigger : MonoBehaviour
 
             // 攻撃オブジェクトの親オブジェクトから StatusManager を取得
             StatusManager attackerStatus = other.GetComponentInParent<StatusManager>();
- 
+            // 攻撃オブジェクトの位置を取得（ノックバック用）
+            Transform attackerTransform = other.transform;
+
             int damageAmount = 1; // デフォルトのダメージ量
             float critAmount = 0f; // デフォルトのダメージ量
-
 
             // 親の StatusManager にダメージを通知
             if (statusManager != null)
             {
-                if(attackerStatus != null)
+                if (attackerStatus != null)
                 {
                     // 攻撃側のダメージ量を取得
                     damageAmount = attackerStatus.GetDamageAmount();
@@ -39,7 +44,20 @@ public class DamageTrigger : MonoBehaviour
 
                 // ダメージ量を処理関数に送る
                 statusManager.Damage(damageAmount, critAmount);
+
+                // ノックバック処理
+                ApplyKnockback(attackerTransform);
             }
+        }
+    }
+
+    private void ApplyKnockback(Transform attackerTransform)
+    {
+        // 親オブジェクトがEnemyControllerを持っていたら、TakeDamage関数を呼び出し
+        EnemyController enemyController = GetComponentInParent<EnemyController>();
+        if (enemyController != null)
+        {
+            enemyController.TakeDamage(attackerTransform.position);
         }
     }
 }
