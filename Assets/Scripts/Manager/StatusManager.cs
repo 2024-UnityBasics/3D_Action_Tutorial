@@ -39,7 +39,7 @@ public class StatusManager : MonoBehaviour
     }
 
     // 被ダメージ時の処理
-    public void Damage(int baseDamage ,float takeCrit)
+    public void Damage(int baseDamage ,float takeCrit,Vector3 attackPoint)
     {
         DamageType damageType;        // DamageTypeを宣言
 
@@ -52,10 +52,10 @@ public class StatusManager : MonoBehaviour
         hp -= Mathf.RoundToInt(finalDamage);
 
         var effect = Instantiate(damageEffect);     // ダメージエフェクトの生成
-        effect.transform.position = transform.position; // ダメージエフェクトの生成場所の指定
+        effect.transform.position = attackPoint; // ダメージエフェクトの生成場所の指定
 
         DamagePopupManager manager = FindObjectOfType<DamagePopupManager>(); // Managerを検索
-        manager.ShowDamage(Mathf.RoundToInt(finalDamage), transform.position, damageType); // ダメージポップアップ表示
+        manager.ShowDamage(Mathf.RoundToInt(finalDamage), attackPoint, damageType); // ダメージポップアップ表示
     }
 
     private void DamageCalc(int baseDamage, out DamageType damageType, out float finalDamage, float takeCrit)

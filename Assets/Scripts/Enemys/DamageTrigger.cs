@@ -27,7 +27,8 @@ public class DamageTrigger : MonoBehaviour {
             // 攻撃オブジェクトの親オブジェクトから StatusManager を取得
             StatusManager attackerStatus = other.GetComponentInParent<StatusManager>();
             // 攻撃オブジェクトの位置を取得（ノックバック用）
-            Transform attackerTransform = other.transform;
+            Vector3 attackPoint = other.ClosestPoint(transform.position);
+
 
             int damageAmount = 1; // デフォルトのダメージ量
             float critAmount = 0f; // デフォルトのダメージ量
@@ -43,21 +44,21 @@ public class DamageTrigger : MonoBehaviour {
                 }
 
                 // ダメージ量を処理関数に送る
-                statusManager.Damage(damageAmount, critAmount);
+                statusManager.Damage(damageAmount, critAmount,attackPoint);
 
                 // ノックバック処理
-                ApplyKnockback(attackerTransform);
+                ApplyKnockback(attackPoint);
             }
         }
     }
 
-    private void ApplyKnockback(Transform attackerTransform)
+    private void ApplyKnockback(Vector3 attackPoint)
     {
         // 親オブジェクトがEnemyControllerを持っていたら、TakeDamage関数を呼び出し
         EnemyController enemyController = GetComponentInParent<EnemyController>();
         if (enemyController != null)
         {
-            enemyController.TakeDamage(attackerTransform.position);
+            enemyController.TakeDamage(attackPoint);
         }
     }
 }

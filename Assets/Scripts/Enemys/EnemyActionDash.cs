@@ -46,6 +46,7 @@ public class EnemyActionDash : MonoBehaviour {
 
         // 突進方向を計算（プレイヤーの方向）
         dashDirection = (target.position - transform.position).normalized;
+        dashDirection.y = 0f;   // y軸の移動度を0にして地面と平行な突進にするように変更。ただし斜面での動きは未検証
 
         // 攻撃判定用のコライダーを有効化
         AttackColliderOn();
