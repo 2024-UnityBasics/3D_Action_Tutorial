@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
     {
         // ゲームクリア時に行いたい処理をここに書きます
         Debug.Log("Congratulations! You have cleared the game!");
+        // クリアUIの呼び出し
+        UIManager.Instance.ActiveClearUI();
 
         // 例: ゲームクリアのUIを表示したり、シーンを遷移させたりする処理
         // SceneManager.LoadScene("GameClearScene"); // 例えば、ゲームクリア後に別のシーンに遷移する場合
