@@ -52,7 +52,7 @@ public class StatusManager : MonoBehaviour
         float finalDamage;  // 計算後の最終ダメージ
 
         // ダメージ計算を専用関数化
-        DamageCalc(baseDamage, out damageType, out finalDamage ,takeCrit);
+        DamageCalc(baseDamage, out damageType, out finalDamage, takeCrit);
 
         // HPを減少
         hp -= Mathf.RoundToInt(finalDamage);
@@ -62,6 +62,19 @@ public class StatusManager : MonoBehaviour
 
         DamagePopupManager manager = FindObjectOfType<DamagePopupManager>(); // Managerを検索
         manager.ShowDamage(Mathf.RoundToInt(finalDamage), attackPoint, damageType); // ダメージポップアップ表示
+
+        HPGageUpdateUI();
+
+    }
+
+    private void HPGageUpdateUI()
+    {
+        // UIManager にHP更新を通知
+        if (this.gameObject.CompareTag("Player")) // プレイヤーの場合にのみUI更新
+        {
+            Debug.Log("UI");
+            UIManager.Instance.UpdateHPBar(hp, maxHp);
+        }
     }
 
     private void DamageCalc(int baseDamage, out DamageType damageType, out float finalDamage, float takeCrit)

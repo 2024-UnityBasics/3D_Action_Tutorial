@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -8,6 +9,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     GameObject clearUI;
+    [SerializeField]
+    Image hpGage;
 
     private void Awake()
     {
@@ -44,4 +47,13 @@ public class UIManager : MonoBehaviour
     {
         SceneLoader.Instance.LoadSceneWithFade("SampleScene");
     }
+
+    // HPバーの更新メソッド
+    public void UpdateHPBar(float currentHP, float maxHP)
+    {
+        // HPバーのFillAmountを更新
+        hpGage.fillAmount = currentHP / maxHP;
+        Debug.Log(hpGage.fillAmount);
+    }
+
 }
