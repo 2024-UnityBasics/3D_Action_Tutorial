@@ -10,7 +10,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject clearUI;
     [SerializeField]
-    Image hpGage;
+    Image hpGage; 
+    [SerializeField]
+    Image critGage;
 
     private void Awake()
     {
@@ -53,7 +55,10 @@ public class UIManager : MonoBehaviour
     {
         // HPバーのFillAmountを更新
         hpGage.fillAmount = currentHP / maxHP;
-        Debug.Log(hpGage.fillAmount);
     }
-
+    public void UpdateCritBar(float currentCrit, float borderCrit)
+    {
+        // CritバーのFillAmountを更新
+        critGage.fillAmount = currentCrit / borderCrit;
+    }
 }

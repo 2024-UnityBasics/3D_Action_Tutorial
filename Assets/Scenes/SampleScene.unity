@@ -3855,6 +3855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clearUI: {fileID: 729402602}
   hpGage: {fileID: 764940089}
+  critGage: {fileID: 395746791}
 --- !u!114 &1504823716
 MonoBehaviour:
   m_ObjectHideFlags: 0

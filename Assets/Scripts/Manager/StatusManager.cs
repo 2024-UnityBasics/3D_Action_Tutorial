@@ -72,8 +72,15 @@ public class StatusManager : MonoBehaviour
         // UIManager にHP更新を通知
         if (this.gameObject.CompareTag("Player")) // プレイヤーの場合にのみUI更新
         {
-            Debug.Log("UI");
             UIManager.Instance.UpdateHPBar(hp, maxHp);
+        }
+    }
+    private void critGageUpdateUI()
+    {
+        // UIManager にCrit更新を通知
+        if (this.gameObject.CompareTag("Player")) // プレイヤーの場合にのみUI更新
+        {
+            UIManager.Instance.UpdateCritBar(criticalRate,10f);  // 今は仮にマジックナンバー10f、今後Critボーダー超える度に更新したい
         }
     }
 
@@ -173,6 +180,7 @@ public class StatusManager : MonoBehaviour
     public void IncreaseCritRate(float amount)
     {
         criticalRate += amount;
+        critGageUpdateUI();
 
         // ログ (デバッグ用)
         Debug.Log($"クリティカル率が {amount} 増加しました。現在のクリティカル率: {criticalRate}");
